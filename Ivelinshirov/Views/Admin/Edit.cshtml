@@ -1,0 +1,32 @@
+﻿@model Ivelinshirov.Models.EditArtworkModel
+@{
+    ViewData["Title"] = "Edit Artwork";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    Model.Referer = Model.Model.Category.Name;
+}
+
+<h3 class="mb-3">Edit Artwork</h3>
+<div class="row">
+    <div class="col-md-4">
+        <div class="mb-4">
+            <img src="~/images/artwork/@Model.Model.ImageName" style="width: 100%"/>
+        </div>
+        <form asp-action="Edit" enctype="multipart/form-data">
+            @Html.HiddenFor(m => m.Model.Id)
+            @Html.HiddenFor(m => m.Model.ImageFile)
+            @Html.HiddenFor(m => m.Model.ImageName)
+            @Html.HiddenFor(m => m.Model.ImagePath)
+            @Html.HiddenFor(m => m.Model.PositionPreference)
+            @Html.HiddenFor(m => m.Model.Category)
+            @Html.HiddenFor(m => m.Referer)
+            <div class="form-group">
+                <label asp-for="Model.Title"></label>
+                <input asp-for="Model.Title" class="form-control" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save Changes" class="btn btn-primary mr-1" />
+                <a asp-action="Index" asp-route-id="@Model.Referer" class="btn btn-light">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>

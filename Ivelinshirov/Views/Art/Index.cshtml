@@ -1,0 +1,13 @@
+﻿@model IEnumerable<Data.Models.Artwork>
+@{
+    ViewData["Title"] = Model.FirstOrDefault().Category.Name;
+}
+
+<div class="row">
+    @foreach (var artwork in Model)
+    {
+        <div class="col-md-4 col-sm-6 mb-4">
+            <img src="~/images/artwork/@artwork.ImageName" class="artwork-item" />
+        </div>
+    }
+</div>

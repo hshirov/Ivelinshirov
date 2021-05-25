@@ -1,0 +1,36 @@
+﻿@model IEnumerable<Data.Models.Artwork>
+@{
+    ViewData["Title"] = "Paintings";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<script>
+    $(function () {
+        $(".save-order-button").click(function () {
+            var result = $('#sortable').sortable("toArray", { attribute: 'id' });
+
+            $.post("UpdateOrder", { ArtworkCategory: '@Model.FirstOrDefault().Category', Positions: result }, function (data) {
+                location.reload();
+            });
+        });
+    });
+</script>
+
+<h3>Paintings</h3>
+<a asp-controller="Admin" asp-action="Add">Add new artwork</a>
+<div class="save-order-button">
+    <button class="btn btn-success">Save Order</button>
+</div>
+<div class="sortable-grid">
+    <ul id="sortable" class="row align-items-start">
+        @foreach (var painting in Model)
+        {
+            <li class="ui-state-default admin-grid-item col-md-4 col-sm-6 mb-3" id="@painting.Id">
+                <img src="~/images/artwork/@painting.ImageName" class="admin-grid-item-image" />
+                <form method="post" class="mt-3 mb-3">
+                    <a asp-action="EditArtwork" asp-route-id="@painting.Id" class="btn btn-light mr-2">Edit</a>
+                    <button asp-action="RemoveArtwork" asp-route-id="@painting.Id" class="btn btn-danger">Delete</button>
+                </form>
+            </li>
+        }
+    </ul>
+</div>

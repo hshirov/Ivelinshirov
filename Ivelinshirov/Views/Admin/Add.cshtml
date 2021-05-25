@@ -1,0 +1,29 @@
+﻿@model Ivelinshirov.Models.AddArtworkModel
+@{     
+    ViewData["Title"] = "Add Artwork";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h3>@ViewData["Title"]</h3>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Add" enctype="multipart/form-data">
+            <div class="form-group">
+                <label asp-for="Title"></label>
+                <input asp-for="Title" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label>Category</label>
+                @Html.DropDownListFor(model => model.CategoryId, new SelectList(Model.AllCategories.Select(m => m), "Id", "Name"), "Select Category", new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                <label asp-for="ImageFile"></label>
+                <input asp-for="ImageFile" accept="image/*" />
+                <span asp-validation-for="ImageFile" class="text-danger" style="display: block"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Add" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
