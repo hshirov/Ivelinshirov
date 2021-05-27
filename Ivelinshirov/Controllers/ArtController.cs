@@ -16,6 +16,7 @@ namespace Ivelinshirov.Controllers
             _artworkService = artworkService;
         }
 
+        [Route("Art/{id?}")]
         public async Task<IActionResult> Index(string id)
         {
             var category = await _categoryService.GetByName(id);

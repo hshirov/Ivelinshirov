@@ -62,6 +62,12 @@ namespace Ivelinshirov
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapControllerRoute(
+                    name: "hideIndex",
+                    pattern: "{controller=Home}/{id?}",
+                    defaults: new { action = "Index" });
+
                 endpoints.MapRazorPages();
             });
         }
