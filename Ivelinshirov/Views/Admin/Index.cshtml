@@ -5,7 +5,7 @@
 }
 
 <h3>@ViewData["Title"]</h3>
-<a asp-controller="Admin" asp-action="Add" asp-route-category="@Model.Category">Add new artwork</a>
+<a asp-controller="Admin" asp-action="AddArtwork" asp-route-category="@Model.Category">Add new artwork</a>
 <div class="save-order-button">
     <button class="btn btn-success">Save Order</button>
 </div>
@@ -16,8 +16,8 @@
             <li class="ui-state-default admin-grid-item col-md-4 col-sm-6 mb-3" id="@painting.Id">
                 <img src="~/images/artwork/@painting.ImageName" class="admin-grid-item-image" />
                 <form method="post" class="mt-3 mb-3">
-                    <a asp-action="Edit" asp-route-id="@painting.Id" class="btn btn-light mr-2">Edit</a>
-                    <button asp-action="Remove" asp-route-id="@painting.Id" class="btn btn-danger">Delete</button>
+                    <a asp-action="EditArtwork" asp-route-id="@painting.Id" class="btn btn-light mr-2">Edit</a>
+                    <button asp-action="RemoveArtwork" asp-route-id="@painting.Id" class="btn btn-danger">Delete</button>
                 </form>
             </li>
         }

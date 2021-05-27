@@ -27,11 +27,15 @@ namespace Ivelinshirov.Controllers
         {
             if(id == null)
             {
-                var defaultCategory = await _categoryService.GetById(1);
+                var defaultCategory = _categoryService.GetAll().Result.FirstOrDefault();
 
                 if(defaultCategory != null)
                 {
                     id = defaultCategory.Name;
+                }
+                else
+                {
+                    return RedirectToAction("Categories");
                 }
             }
 
@@ -93,14 +97,23 @@ namespace Ivelinshirov.Controllers
         [HttpPost]
         public async Task<IActionResult> RemoveCategory(int id)
         {
-            await _categoryService.Remove(id);
+            var category = await _categoryService.GetById(id);
 
-            // Remove image files
+            if(category != null)
+            {
+                // Remove image files
+                foreach(var artwork in category.Artworks)
+                {
+                    DeleteArtworkImage(artwork);
+                }
+
+                await _categoryService.Remove(id);
+            }
 
             return RedirectToAction("Categories");
         }
 
-        public async Task<IActionResult> Add(string category)
+        public async Task<IActionResult> AddArtwork(string category)
         {
             AddArtworkModel model = new AddArtworkModel()
             {
@@ -112,6 +125,7 @@ namespace Ivelinshirov.Controllers
             if(defaultCategory != null)
             {
                 model.CategoryId = defaultCategory.Id;
+                model.RefererCategoryName = defaultCategory.Name;
             }
 
             return View(model);
@@ -119,7 +133,7 @@ namespace Ivelinshirov.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add(AddArtworkModel model)
+        public async Task<IActionResult> AddArtwork(AddArtworkModel model)
         {
             if (ModelState.IsValid)
             {
@@ -142,7 +156,7 @@ namespace Ivelinshirov.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Remove(int id)
+        public async Task<IActionResult> RemoveArtwork(int id)
         {
             DeleteArtworkImage(await _artworkService.Get(id));
             await _artworkService.Remove(id);
@@ -151,7 +165,7 @@ namespace Ivelinshirov.Controllers
             return Redirect(referer);
         }
 
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> EditArtwork(int id)
         {
             var artwork = await _artworkService.Get(id);
 
@@ -170,7 +184,7 @@ namespace Ivelinshirov.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(EditArtworkModel viewModel)
+        public async Task<IActionResult> EditArtwork(EditArtworkModel viewModel)
         {
             if (ModelState.IsValid)
             {

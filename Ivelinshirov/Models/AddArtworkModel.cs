@@ -17,6 +17,7 @@ namespace Ivelinshirov.Models
         public IFormFile ImageFile { get; set; }
         [Required]
         public int CategoryId { get; set; }
+        public string RefererCategoryName { get; set; }
 
         public IEnumerable<Category> AllCategories { get; set; }
     }

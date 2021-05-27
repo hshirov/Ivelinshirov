@@ -11,7 +11,7 @@
         <div class="mb-4">
             <img src="~/images/artwork/@Model.Model.ImageName" style="width: 100%"/>
         </div>
-        <form asp-action="Edit" enctype="multipart/form-data">
+        <form asp-action="EditArtwork" enctype="multipart/form-data">
             @Html.HiddenFor(m => m.Model.Id)
             @Html.HiddenFor(m => m.Model.ImageFile)
             @Html.HiddenFor(m => m.Model.ImageName)

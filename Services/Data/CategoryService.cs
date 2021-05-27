@@ -10,12 +10,10 @@ namespace Services.Data
     public class CategoryService : ICategoryService
     {
         private readonly ApplicationDbContext _context;
-        private readonly IArtworkService _artworkService;
 
-        public CategoryService(ApplicationDbContext context, IArtworkService artworkService)
+        public CategoryService(ApplicationDbContext context)
         {
             _context = context;
-            _artworkService = artworkService;
         }
 
         public async Task Add(Category category)
@@ -33,17 +31,21 @@ namespace Services.Data
 
         public async Task<Category> GetById(int id)
         {
-            return await _context.Categories.AsQueryable().FirstOrDefaultAsync(x => x.Id == id);
+            return await _context.Categories
+                .Include(x => x.Artworks)
+                .AsQueryable().FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<Category> GetByName(string name)
         {
-            return await _context.Categories.AsQueryable().FirstOrDefaultAsync(x => x.Name == name);
+            return await _context.Categories
+                .Include(x => x.Artworks)
+                .AsQueryable().FirstOrDefaultAsync(x => x.Name == name);
         }
 
         public async Task Remove(int id)
         {
-            var categoryToRemove = await _context.Categories.Include(x => x.Artworks).FirstOrDefaultAsync(x => x.Id == id);
+            var categoryToRemove = await GetById(id);
             if (categoryToRemove.Artworks != null && categoryToRemove.Artworks.Any())
             {
                 foreach(var artwork in categoryToRemove.Artworks)
