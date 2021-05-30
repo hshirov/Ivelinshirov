@@ -13,6 +13,7 @@ namespace Services.Data
         public Task UpdatePosition(int id, int newPosition);
         public Task<Artwork> Get(int id);
         public IQueryable<Artwork> GetAll();
+        public Task<IEnumerable<Artwork>> GetAllFeaturedOnHomePage();
         public Task<IEnumerable<Artwork>> GetAllFromCategory(int categoryId);
     }
 }

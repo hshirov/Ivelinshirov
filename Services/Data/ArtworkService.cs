@@ -35,6 +35,11 @@ namespace Services.Data
             return _context.Artworks.Include(x => x.Category).AsQueryable();
         }
 
+        public async Task<IEnumerable<Artwork>> GetAllFeaturedOnHomePage()
+        {
+            return await GetAll().Where(x => x.IsFeaturedOnHomePage).OrderBy(x => x.PositionPreference).ToListAsync();
+        }
+
         public async Task<IEnumerable<Artwork>> GetAllFromCategory(int categoryId)
         {
             return await GetAll().Where(x => x.Category.Id == categoryId).OrderBy(x => x.PositionPreference).ToListAsync();

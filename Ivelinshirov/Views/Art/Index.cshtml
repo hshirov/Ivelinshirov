@@ -8,8 +8,18 @@
     {
         <div class="col-md-4 col-sm-6 mb-5">
             <div class="col-md-12">
-                <img src="~/images/artwork/@artwork.ImageName" class="artwork-item" />
+                <a href="~/images/artwork/@artwork.ImageName" data-lightbox="artwork" data-title="@artwork.Title">
+                    <img src="~/images/artwork/@artwork.ImageName" class="artwork-item" />
+                </a>
             </div>
         </div>
     }
 </div>
+
+<script>
+    lightbox.option({
+        'showImageNumberLabel': false,
+        'positionFromTop': 90,
+        'resizeDuration': 500
+    })
+</script>

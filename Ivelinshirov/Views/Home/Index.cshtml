@@ -1,10 +1,27 @@
-﻿@{
+﻿@model IEnumerable<Data.Models.Artwork>
+@{
     ViewData["Title"] = "Ivelin Shirov";
 }
+<script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript" src="~/js/responsiveslides.min.js"></script>
+<link rel="stylesheet" href="~/css/rslides.css" />
+<script>
+    $(function () {
+        $(".rslides").responsiveSlides({
+            speed: 800,
+            timeout: 3000
+        });
+    });
+</script>
 
-<script type="text/javascript" src="/js/responsiveslides.min.js"></script>
-
-<div class="home-image">
-    <h5 class="home-title text-muted mb-2">Paintings, Drawings, Hyper Realistic Art</h5>
-    <img src="~/images/artwork/p22129445405.jpg" style="width: 100%; height: auto;" />
+<div class="home-container">
+    @*<h5 class="home-title text-muted mb-2">Paintings, Drawings, Hyper Realistic Art</h5>*@
+    <div class="slidebox">
+        <ul class="rslides">
+            @foreach (var artwork in Model)
+            {
+                <li><img src="~/images/artwork/@artwork.ImageName"></li>
+            }
+        </ul>
+    </div>
 </div>

@@ -20,9 +20,11 @@ namespace Ivelinshirov.Controllers
             _artworkService = artworkService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var featuredArtwork = await _artworkService.GetAllFeaturedOnHomePage();
+
+            return View(featuredArtwork);
         }
 
         public async Task<IActionResult> Art(string id)

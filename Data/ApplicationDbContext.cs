@@ -16,9 +16,9 @@ namespace Data
         {
         }
 
-        public DbSet<Artwork> Artworks { get; set; }
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<Biography> Biography { get; set; }
+        public virtual DbSet<Artwork> Artworks { get; set; }
+        public virtual DbSet<Category> Categories { get; set; }
+        public virtual DbSet<Biography> Biography { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

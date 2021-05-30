@@ -12,6 +12,7 @@ namespace Data.Models
         public int PositionPreference { get; set; }
         [NotMapped]
         public IFormFile ImageFile { get; set; }
+        public bool IsFeaturedOnHomePage { get; set; }
 
         public Category Category { get; set; }
     }
