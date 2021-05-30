@@ -13,34 +13,34 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <div class="logo mt-3">
+            <a asp-area="" asp-controller="Home" asp-action="Index">
+                <img src="~/images/logo.png">
+            </a>
+        </div>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light mb-4">
             <div class="container">
-                <div class="logo">
-                    <a asp-area="" asp-controller="Home" asp-action="Index">
-                        <img src="~/images/logo.png">
-                    </a>
-                </div>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                    <ul class="navbar-nav flex-grow-1 justify-content-center">
                         @foreach (var category in await categoryService.GetAll())
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Art" asp-action="Index" asp-route-id="@category.Name">@category.Name.ToUpper()</a>
+                                <b><a class="nav-link text-dark" asp-area="" asp-controller="Art" asp-action="Index" asp-route-id="@category.Name">@category.Name.ToUpper()</a></b>
                             </li>
                         }
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">BIOGRAPHY</a>
+                            <b><a class="nav-link text-dark" asp-area="" asp-controller="Biography" asp-action="Index">BIOGRAPHY</a></b>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index">ADMIN PANEL</a>
+                            <b><a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index">ADMIN PANEL</a></b>
                         </li>
                     </ul>
                 </div>
-                <partial name="_LoginPartial" />
+
             </div>
         </nav>
     </header>
@@ -52,7 +52,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2021 - Ivelin Shirov. Developed by Hristo Shirov
+            &copy; 2021 - Ivelin Shirov. Developed by Hristo Shirov.
         </div>
     </footer>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

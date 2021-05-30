@@ -1,0 +1,17 @@
+﻿@model Data.Models.Biography 
+@{
+    ViewData["Title"] = "Biography";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h3>@ViewData["Title"]</h3>
+
+<form asp-action="EditBiography">
+    <div class="form-group">
+        @Html.TextAreaFor(x => x.Text, new { @class = "form-control mt-3", @style = "height: 600px;" })
+    </div>
+    @Html.HiddenFor(x => x.Id)
+    <div class="form-group mt-3">
+        <input type="submit" value="Save Changes" class="btn btn-primary" />
+    </div>
+</form>

@@ -15,12 +15,14 @@ namespace Ivelinshirov.Controllers
         private readonly IWebHostEnvironment _hostEnvironment;
         private readonly IArtworkService _artworkService;
         private readonly ICategoryService _categoryService;
+        private readonly IBiographyService _biographyService;
 
-        public AdminController(IWebHostEnvironment hostEnvironment, IArtworkService artworkService, ICategoryService categoryService)
+        public AdminController(IWebHostEnvironment hostEnvironment, IArtworkService artworkService, ICategoryService categoryService, IBiographyService biographyService)
         {
             _hostEnvironment = hostEnvironment;
             _artworkService = artworkService;
             _categoryService = categoryService;
+            _biographyService = biographyService;
         }
 
         public async Task<IActionResult> Index(string id)
@@ -64,53 +66,6 @@ namespace Ivelinshirov.Controllers
             }
 
             return NotFound();
-        }
-
-        public async Task<IActionResult> Categories()
-        {
-            var categories = await _categoryService.GetAll();
-
-            return View(categories);
-        }
-
-        public IActionResult AddCategory()
-        {
-            var emptyModel = new Category();
-
-            return View(emptyModel);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddCategory(Category category)
-        {
-            if (ModelState.IsValid)
-            {
-                await _categoryService.Add(category);
-
-                return RedirectToAction("Categories");
-            }
-
-            return View(category);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> RemoveCategory(int id)
-        {
-            var category = await _categoryService.GetById(id);
-
-            if(category != null)
-            {
-                // Remove image files
-                foreach(var artwork in category.Artworks)
-                {
-                    DeleteArtworkImage(artwork);
-                }
-
-                await _categoryService.Remove(id);
-            }
-
-            return RedirectToAction("Categories");
         }
 
         public async Task<IActionResult> AddArtwork(string category)
@@ -194,6 +149,73 @@ namespace Ivelinshirov.Controllers
             }
 
             return View(viewModel);
+        }
+
+        public async Task<IActionResult> Categories()
+        {
+            var categories = await _categoryService.GetAll();
+
+            return View(categories);
+        }
+
+        public IActionResult AddCategory()
+        {
+            var emptyModel = new Category();
+
+            return View(emptyModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddCategory(Category category)
+        {
+            if (ModelState.IsValid)
+            {
+                await _categoryService.Add(category);
+
+                return RedirectToAction("Categories");
+            }
+
+            return View(category);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveCategory(int id)
+        {
+            var category = await _categoryService.GetById(id);
+
+            if (category != null)
+            {
+                // Remove image files
+                foreach (var artwork in category.Artworks)
+                {
+                    DeleteArtworkImage(artwork);
+                }
+
+                await _categoryService.Remove(id);
+            }
+
+            return RedirectToAction("Categories");
+        }
+
+        public async Task<IActionResult> Biography()
+        {
+            Biography bio = await _biographyService.Get();
+
+            return View(bio);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditBiography(Biography biography)
+        {
+            if (ModelState.IsValid)
+            {
+                await _biographyService.Update(biography);
+
+                return RedirectToAction("Index");
+            }
+
+            return View(biography);
         }
 
         [HttpPost]

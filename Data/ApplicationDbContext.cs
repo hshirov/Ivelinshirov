@@ -18,6 +18,7 @@ namespace Data
 
         public DbSet<Artwork> Artworks { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Biography> Biography { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -25,6 +26,10 @@ namespace Data
             builder.Entity<Category>().HasData(
                 new Category { Id = 1, Name = "Paintings" },
                 new Category { Id = 2, Name = "Drawings" }
+            );
+
+            builder.Entity<Biography>().HasData(
+                new Biography { Id = 1 , Text = "" }
             );
 
             base.OnModelCreating(builder);

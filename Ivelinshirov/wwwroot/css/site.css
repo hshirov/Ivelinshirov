@@ -104,3 +104,51 @@ body {
     float: left;
     text-align: center;
 }
+
+.bio-text {
+    font-size: 20px;
+    text-align: center;
+    font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+}
+
+.home-image {
+    width: 70%;
+    margin: auto;
+    text-align: center;
+}
+
+.home-title {
+    /*font-family: "Nobel Book", "Nobel Book", sans-serif;*/
+}
+
+@media only screen and (max-width: 600px) {
+    .bio-text {
+        font-size: 15px;
+    }
+
+    .home-image{
+        width: 90%;
+    }
+
+    .logo {
+        width: 60%;
+        margin: auto;
+    }
+
+    .logo img {
+        width: 100%;
+    }
+}
+
+.bio-image {
+    max-width: 100%;
+    height: auto;
+}
+
+.image-box {
+    text-align: center;
+}
+
+.logo {
+    padding-bottom: 5px;
+}

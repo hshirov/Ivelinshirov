@@ -1,0 +1,15 @@
+﻿@model Data.Models.Biography
+@{
+    ViewData["Title"] = "Biography";
+}
+
+<div class="row">
+    <div class="col-md-3 col-sm-12 image-box mb-3">
+        <img class="bio-image" src="~/images/bio_photo.png"/>
+    </div>
+    <div class="col-md-9">
+        <div class="col-md-10">
+            @Html.Raw("<pre class='bio-text'>" + Html.Encode(Model.Text) + "</pre>")
+        </div>
+    </div>
+</div>
