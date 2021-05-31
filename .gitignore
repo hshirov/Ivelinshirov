@@ -341,3 +341,5 @@ healthchecksdb
 
 artwork/
 !artwork/.gitkeep
+
+appsettings.Development.json

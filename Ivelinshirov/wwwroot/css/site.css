@@ -64,11 +64,12 @@ body {
     font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
 }
 .footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px; /* Vertically center the text there */
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px; /* Vertically center the text there */
+    font-size: 14px;
 }
 
 .logo {
@@ -119,7 +120,8 @@ body {
 
 @media only screen and (max-width: 600px) {
     .bio-text {
-        font-size: 15px;
+        font-size: 14px;
+        text-align: left;
     }
 
     .home-container {
