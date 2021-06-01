@@ -1,4 +1,6 @@
-﻿using MailKit.Net.Smtp;
+﻿using Data.Settings;
+using MailKit.Net.Smtp;
+using Microsoft.Extensions.Options;
 using MimeKit;
 using System.Threading.Tasks;
 
@@ -6,11 +8,17 @@ namespace Services.External
 {
     public class MessageService : IMessageService
     {
-        public async Task SendEmailAsync(string fromDisplayName, string fromEmailAddress, string toName, string toEmailAddress, string subject, string message)
+        private readonly MailSettings _mailSettings;
+        public MessageService(IOptions<MailSettings> mailSettings)
+        {
+            _mailSettings = mailSettings.Value;
+        }
+
+        public async Task SendEmailAsync(string fromDisplayName, string fromEmailAddress, string subject, string message)
         {
             var email = new MimeMessage();
             email.From.Add(new MailboxAddress(fromDisplayName, fromEmailAddress));
-            email.To.Add(new MailboxAddress(toName, toEmailAddress));
+            email.To.Add(new MailboxAddress(_mailSettings.ResiverName, _mailSettings.ResiverEmail));
             email.Subject = subject;
 
             var body = new BodyBuilder
@@ -18,14 +26,16 @@ namespace Services.External
                 HtmlBody = message
             };
 
+            email.Body = body.ToMessageBody();
+
             using(var client = new SmtpClient())
             {
                 client.ServerCertificateValidationCallback =
                     (sender, certificate, certChainType, errors) => true;
                 client.AuthenticationMechanisms.Remove("XOAUTH2");
 
-                await client.ConnectAsync("smtp.host", 587, false).ConfigureAwait(false);
-                await client.AuthenticateAsync("username", "password").ConfigureAwait(false);
+                await client.ConnectAsync(_mailSettings.Host, _mailSettings.Port, false).ConfigureAwait(false);
+                await client.AuthenticateAsync(_mailSettings.Mail, _mailSettings.Password).ConfigureAwait(false);
 
                 await client.SendAsync(email).ConfigureAwait(false);
                 await client.DisconnectAsync(true).ConfigureAwait(false);

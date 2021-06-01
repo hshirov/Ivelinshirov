@@ -1,5 +1,6 @@
 using Data;
 using Data.Models;
+using Data.Settings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Services.Data;
+using Services.External;
 
 namespace Ivelinshirov
 {
@@ -35,6 +37,9 @@ namespace Ivelinshirov
             services.AddTransient<IArtworkService, ArtworkService>();
             services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<IBiographyService, BiographyService>();
+            services.AddTransient<IMessageService, MessageService>();
+
+            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
