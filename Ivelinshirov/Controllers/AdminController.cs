@@ -1,5 +1,6 @@
 ﻿using Data.Models;
 using Ivelinshirov.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Services.Data;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace Ivelinshirov.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         private readonly IWebHostEnvironment _hostEnvironment;

@@ -28,17 +28,17 @@
                         @foreach (var category in await categoryService.GetAll())
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index" asp-route-id="@category.Name">@category.Name.ToUpper()</a>
+                                <a class="nav-link nav-link-admin text-dark" asp-area="" asp-controller="Admin" asp-action="Index" asp-route-id="@category.Name">@category.Name.ToUpper()</a>
                             </li>
                         }
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Biography">BIOGRAPHY</a>
+                            <a class="nav-link nav-link-admin text-dark" asp-area="" asp-controller="Admin" asp-action="Biography">BIOGRAPHY</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Categories">CATEGORIES</a>
+                            <a class="nav-link nav-link-admin text-dark" asp-area="" asp-controller="Admin" asp-action="Categories">CATEGORIES</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-danger" asp-area="" asp-controller="Home" asp-action="Index">EXIT ADMIN PANEL</a>
+                            <a class="nav-link nav-link-admin text-danger" asp-area="" asp-controller="Home" asp-action="Index">EXIT ADMIN PANEL</a>
                         </li>
                     </ul>
                 </div>

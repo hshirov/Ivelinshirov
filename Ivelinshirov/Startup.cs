@@ -3,6 +3,8 @@ using Data.Models;
 using Data.Settings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,8 +29,16 @@ namespace Ivelinshirov
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<ApplicationUser, Microsoft.AspNetCore.Identity.IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddIdentity<ApplicationUser, IdentityRole>(options => {
+                options.Password.RequireNonAlphanumeric = false;
+            })
+            .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = new PathString("/Identity/Account/AccessDenied");
+                options.AccessDeniedPath = new PathString("/Identity/Account/AccessDenied");
+            });
 
             services.AddControllersWithViews();
             services.AddRazorPages();
@@ -43,7 +53,7 @@ namespace Ivelinshirov
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             if (env.IsDevelopment())
             {
@@ -63,16 +73,16 @@ namespace Ivelinshirov
             app.UseAuthentication();
             app.UseAuthorization();
 
+            // Seeding identity data
+
+            ApplicationDbInitializer.SeedRoles(roleManager);
+            ApplicationDbInitializer.SeedUsers(userManager);
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-
-                endpoints.MapControllerRoute(
-                    name: "hideIndex",
-                    pattern: "{controller=Home}/{id?}",
-                    defaults: new { action = "Index" });
 
                 endpoints.MapRazorPages();
             });

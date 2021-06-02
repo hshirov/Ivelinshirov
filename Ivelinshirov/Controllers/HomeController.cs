@@ -27,21 +27,10 @@ namespace Ivelinshirov.Controllers
             return View(featuredArtwork);
         }
 
-        public async Task<IActionResult> Art(string id)
+        [Route("/Login")]
+        public IActionResult Login()
         {
-            var category = await _categoryService.GetByName(id);
-
-            if (category != null)
-            {
-                var artwork = await _artworkService.GetAllFromCategory(category.Id);
-
-                if(artwork != null)
-                {
-                    return View(artwork);
-                }
-            }
-
-            return NotFound();
+            return Redirect("/Identity/Account/Login");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
