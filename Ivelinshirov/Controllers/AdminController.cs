@@ -67,7 +67,7 @@ namespace Ivelinshirov.Controllers
                 }
             }
 
-            return NotFound();
+            return StatusCode(404);
         }
 
         public async Task<IActionResult> AddArtwork(string category)
@@ -200,21 +200,24 @@ namespace Ivelinshirov.Controllers
             return RedirectToAction("Categories");
         }
 
-        public async Task<IActionResult> Biography()
+        public async Task<IActionResult> About()
         {
             Biography bio = await _biographyService.Get();
+            ViewBag.Success = TempData["Success"];
 
             return View(bio);
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditBiography(Biography biography)
+        public async Task<IActionResult> EditAbout(Biography biography)
         {
             if (ModelState.IsValid)
             {
                 await _biographyService.Update(biography);
 
-                return RedirectToAction("Index");
+                TempData["Success"] = true;
+
+                return RedirectToAction("About");
             }
 
             return View(biography);

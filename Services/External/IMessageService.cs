@@ -4,8 +4,7 @@ namespace Services.External
 {
     public interface IMessageService
     {
-        Task SendEmailAsync(
-            string fromDisplayName, string fromEmailAddress, string subject, string message
-        );
+        Task SendEmailToAdminAsync(string fromDisplayName, string fromEmailAddress, string subject, string message);
+        Task SendEmailAsync(string emailAddress, string subject, string htmlMessage);
     }
 }

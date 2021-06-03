@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 
 namespace Ivelinshirov.Controllers
 {
-    public class BiographyController : Controller
+    public class AboutController : Controller
     {
         private readonly IBiographyService _biographyService;
-        public BiographyController(IBiographyService biographyService)
+        public AboutController(IBiographyService biographyService)
         {
             _biographyService = biographyService;
         }
@@ -21,7 +21,7 @@ namespace Ivelinshirov.Controllers
                 return View(bio);
             }
 
-            return NoContent();
+            return StatusCode(404);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<Data.Models.Artwork>
 @{
-    ViewData["Title"] = "Ivelin Shirov";
+    ViewData["Title"] = "Artist";
 }
 <script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
 <script type="text/javascript" src="~/js/responsiveslides.min.js"></script>
@@ -15,12 +15,11 @@
 </script>
 
 <div class="home-container">
-    @*<h5 class="home-title text-muted mb-2">Paintings, Drawings, Hyper Realistic Art</h5>*@
     <div class="slidebox">
         <ul class="rslides">
             @foreach (var artwork in Model)
             {
-                <li><img src="~/images/artwork/@artwork.ImageName"></li>
+                <li><img src="~/images/artwork/@artwork.ImageName" alt="@artwork.Title"></li>
             }
         </ul>
     </div>

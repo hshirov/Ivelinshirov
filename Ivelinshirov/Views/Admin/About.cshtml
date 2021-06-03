@@ -1,12 +1,12 @@
 ﻿@model Data.Models.Biography 
 @{
-    ViewData["Title"] = "Biography";
+    ViewData["Title"] = "About";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
 <h3>@ViewData["Title"]</h3>
 
-<form asp-action="EditBiography">
+<form asp-action="EditAbout">
     <div class="form-group">
         @Html.TextAreaFor(x => x.Text, new { @class = "form-control mt-3", @style = "height: 600px;" })
     </div>
@@ -14,4 +14,10 @@
     <div class="form-group mt-3">
         <input type="submit" value="Save Changes" class="btn btn-primary" />
     </div>
+    @if (ViewBag.Success != null && ViewBag.Success)
+    {
+        <div class="alert alert-success" role="alert">
+            About section has been updated.
+        </div>
+    }
 </form>

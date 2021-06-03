@@ -31,7 +31,9 @@ namespace Ivelinshirov
 
             services.AddIdentity<ApplicationUser, IdentityRole>(options => {
                 options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
             })
+            //.AddDefaultUI()
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.ConfigureApplicationCookie(options =>
@@ -65,6 +67,9 @@ namespace Ivelinshirov
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseStatusCodePagesWithReExecute("/Home/Error/{0}");
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

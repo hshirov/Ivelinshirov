@@ -35,7 +35,7 @@ namespace Ivelinshirov.Controllers
                     return View(model);
                 }
 
-                await _messageService.SendEmailAsync(model.Name, model.Email, model.Subject, model.Content);
+                await _messageService.SendEmailToAdminAsync(model.Name, model.Email, model.Subject, model.Content);
 
                 // Set an email limiter for 1 hour
 

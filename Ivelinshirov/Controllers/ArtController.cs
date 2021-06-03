@@ -31,7 +31,7 @@ namespace Ivelinshirov.Controllers
                 }
             }
 
-            return RedirectToAction("Index", "Home");
+            return StatusCode(404);
         }
     }
 }

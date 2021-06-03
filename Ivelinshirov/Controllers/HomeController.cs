@@ -10,13 +10,11 @@ namespace Ivelinshirov.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly ICategoryService _categoryService;
         private readonly IArtworkService _artworkService;
 
-        public HomeController(ILogger<HomeController> logger, ICategoryService categoryService, IArtworkService artworkService)
+        public HomeController(ILogger<HomeController> logger, IArtworkService artworkService)
         {
             _logger = logger;
-            _categoryService = categoryService;
             _artworkService = artworkService;
         }
 
@@ -33,10 +31,11 @@ namespace Ivelinshirov.Controllers
             return Redirect("/Identity/Account/Login");
         }
 
+        [Route("/Home/Error/{code:int}")]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult Error(int code)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier, StatusCode = code });
         }
     }
 }
