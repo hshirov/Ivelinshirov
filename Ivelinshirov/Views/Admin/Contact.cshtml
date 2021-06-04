@@ -1,0 +1,25 @@
+﻿@model Data.Models.ContactInfo
+@{
+    ViewData["Title"] = "Contact";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h3>@ViewData["Title"]</h3>
+
+<form asp-action="Contact">
+    @Html.HiddenFor(x => x.Id)
+    <div class="form-group mt-3">
+        <label asp-for="ReceiverEmail"></label>
+        <input asp-for="ReceiverEmail" class="form-control col-md-6" />
+        <span asp-validation-for="ReceiverEmail" class="text-danger"></span>
+    </div>
+    @if (ViewBag.SuccessContact != null && ViewBag.SuccessContact)
+    {
+        <div class="alert alert-success col-md-6" role="alert">
+            Receiver Email has been updated.
+        </div>
+    }
+    <div class="form-group mt-3">
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>
+</form>

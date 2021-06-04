@@ -8,7 +8,6 @@ namespace Data
     {
         public ApplicationDbContext()
         {
-
         }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
@@ -19,6 +18,7 @@ namespace Data
         public virtual DbSet<Artwork> Artworks { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Biography> Biography { get; set; }
+        public virtual DbSet<ContactInfo> ContactInfo { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -30,6 +30,10 @@ namespace Data
 
             builder.Entity<Biography>().HasData(
                 new Biography { Id = 1 , Text = "" }
+            );
+
+            builder.Entity<ContactInfo>().HasData(
+                new ContactInfo { Id = 1, ReceiverEmail = "reciver@ivelinshirov.com" }
             );
 
             base.OnModelCreating(builder);

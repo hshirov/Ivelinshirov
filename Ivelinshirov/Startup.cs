@@ -33,7 +33,7 @@ namespace Ivelinshirov
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = false;
             })
-            //.AddDefaultUI()
+            .AddTokenProvider<DataProtectorTokenProvider<ApplicationUser>>(TokenOptions.DefaultProvider)
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.ConfigureApplicationCookie(options =>
@@ -49,6 +49,7 @@ namespace Ivelinshirov
             services.AddTransient<IArtworkService, ArtworkService>();
             services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<IBiographyService, BiographyService>();
+            services.AddTransient<IContactInfoService, ContactInfoService>();
             services.AddTransient<IMessageService, MessageService>();
 
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
@@ -57,6 +58,12 @@ namespace Ivelinshirov
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
+            using (var scope = app.ApplicationServices.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                context.Database.EnsureCreated();
+            }
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

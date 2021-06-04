@@ -7,7 +7,5 @@
         public string Password { get; set; }
         public string Host { get; set; }
         public int Port { get; set; }
-        public string ResiverName { get; set; }
-        public string ResiverEmail { get; set; }
     }
 }

@@ -9,16 +9,29 @@ namespace Data
     {
         public static void SeedUsers(UserManager<ApplicationUser> userManager)
         {
-            var email = "admin@ivelinshirov.com";
-            if (userManager.FindByEmailAsync(email).Result == null)
+            if (userManager.Users.Any())
             {
-                ApplicationUser user = new ApplicationUser
-                {
-                    UserName = email,
-                    Email = email,
-                    EmailConfirmed = true
-                };
+                return;
+            }
 
+            var users = new List<ApplicationUser>
+            {
+                new ApplicationUser
+                {
+                    UserName = "admin@ivelinshirov.com",
+                    Email = "admin@ivelinshirov.com",
+                    EmailConfirmed = true
+                },
+                new ApplicationUser
+                {
+                    UserName = "owner@ivelinshirov.com",
+                    Email = "owner@ivelinshirov.com",
+                    EmailConfirmed = true
+                }
+            };
+
+            foreach(var user in users)
+            {
                 IdentityResult result = userManager.CreateAsync(user, "InitialPassword1").Result;
 
                 if (result.Succeeded)

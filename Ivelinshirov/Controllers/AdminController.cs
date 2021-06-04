@@ -1,11 +1,10 @@
 ﻿using Data.Models;
+using Ivelinshirov.Common;
 using Ivelinshirov.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Services.Data;
-using System;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,13 +17,21 @@ namespace Ivelinshirov.Controllers
         private readonly IArtworkService _artworkService;
         private readonly ICategoryService _categoryService;
         private readonly IBiographyService _biographyService;
+        private readonly IContactInfoService _contactInfoService;
 
-        public AdminController(IWebHostEnvironment hostEnvironment, IArtworkService artworkService, ICategoryService categoryService, IBiographyService biographyService)
+        public AdminController(
+            IWebHostEnvironment hostEnvironment, 
+            IArtworkService artworkService, 
+            ICategoryService categoryService, 
+            IBiographyService biographyService,
+            IContactInfoService contactInfoService
+        )
         {
             _hostEnvironment = hostEnvironment;
             _artworkService = artworkService;
             _categoryService = categoryService;
             _biographyService = biographyService;
+            _contactInfoService = contactInfoService;
         }
 
         public async Task<IActionResult> Index(string id)
@@ -101,7 +108,7 @@ namespace Ivelinshirov.Controllers
                     ImageFile = model.ImageFile
                 };
 
-                await SaveImageFromArtwork(artwork);
+                await ImageFileHelper.SaveImageFromArtwork(artwork, _hostEnvironment);
                 await _artworkService.Add(artwork);
 
                 return RedirectToAction("Index", new { id = artwork.Category.Name });
@@ -115,7 +122,7 @@ namespace Ivelinshirov.Controllers
         [HttpPost]
         public async Task<IActionResult> RemoveArtwork(int id)
         {
-            DeleteArtworkImage(await _artworkService.Get(id));
+            ImageFileHelper.DeleteArtworkImage(await _artworkService.Get(id));
             await _artworkService.Remove(id);
 
             string referer = Request.Headers["Referer"].ToString();
@@ -191,7 +198,7 @@ namespace Ivelinshirov.Controllers
                 // Remove image files
                 foreach (var artwork in category.Artworks)
                 {
-                    DeleteArtworkImage(artwork);
+                    ImageFileHelper.DeleteArtworkImage(artwork);
                 }
 
                 await _categoryService.Remove(id);
@@ -217,10 +224,33 @@ namespace Ivelinshirov.Controllers
 
                 TempData["Success"] = true;
 
-                return RedirectToAction("About");
+                return RedirectToAction(nameof(this.About));
             }
 
-            return View(biography);
+            return StatusCode(500);
+        }
+
+        public async Task<IActionResult> Contact()
+        {
+            var contactInfo = await _contactInfoService.Get();
+            ViewBag.SuccessContact = TempData["SuccessContact"];
+
+            return View(contactInfo);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Contact(ContactInfo model)
+        {
+            if (ModelState.IsValid)
+            {
+                await _contactInfoService.Update(model);
+
+                TempData["SuccessContact"] = true;
+                return RedirectToAction(nameof(this.Contact));
+            }
+
+            return View(model);
         }
 
         [HttpPost]
@@ -233,26 +263,6 @@ namespace Ivelinshirov.Controllers
 
             string referer = Request.Headers["Referer"].ToString();
             return Redirect(referer);
-        }
-
-        private async Task SaveImageFromArtwork(Artwork artwork)
-        {
-            string wwwRootPath = _hostEnvironment.WebRootPath;
-            string fileExtension = Path.GetExtension(artwork.ImageFile.FileName);
-            string fileName = Path.GetFileNameWithoutExtension(artwork.ImageFile.FileName) + DateTime.Now.ToString("yymmssffff") + fileExtension;
-            artwork.ImageName = fileName;
-
-            string path = artwork.ImagePath = Path.Combine(wwwRootPath + "/images/artwork/", fileName);
-
-            using (var fileStream = new FileStream(path, FileMode.Create))
-            {
-                await artwork.ImageFile.CopyToAsync(fileStream);
-            }
-        }
-
-        private void DeleteArtworkImage(Artwork artwork)
-        {
-            System.IO.File.Delete(artwork.ImagePath);
-        }
+        }      
     }
 }

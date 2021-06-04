@@ -2,6 +2,7 @@
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Options;
 using MimeKit;
+using Services.Data;
 using System.Threading.Tasks;
 
 namespace Services.External
@@ -9,15 +10,20 @@ namespace Services.External
     public class MessageService : IMessageService
     {
         private readonly MailSettings _mailSettings;
-        public MessageService(IOptions<MailSettings> mailSettings)
+        private readonly IContactInfoService _contactInfoService;
+        private readonly string adminEmail;
+        public MessageService(IOptions<MailSettings> mailSettings, IContactInfoService contactInfoService)
         {
             _mailSettings = mailSettings.Value;
+            _contactInfoService = contactInfoService;
+
+            adminEmail = _contactInfoService.Get().Result.ReceiverEmail;
         }
 
         public async Task SendEmailAsync(string emailAddress, string subject, string htmlMessage)
         {
             var email = new MimeMessage();
-            email.From.Add(new MailboxAddress("Ivelinshirov Admin", _mailSettings.ResiverEmail));
+            email.From.Add(new MailboxAddress("Ivelinshirov Admin", adminEmail));
             email.To.Add(new MailboxAddress(emailAddress, emailAddress));
             email.Subject = subject;
 
@@ -46,7 +52,7 @@ namespace Services.External
         {
             var email = new MimeMessage();
             email.From.Add(new MailboxAddress(fromDisplayName, fromEmailAddress));
-            email.To.Add(new MailboxAddress(_mailSettings.ResiverName, _mailSettings.ResiverEmail));
+            email.To.Add(new MailboxAddress("Ivelin Shirov", adminEmail));
             email.Subject = subject;
 
             var body = new BodyBuilder
