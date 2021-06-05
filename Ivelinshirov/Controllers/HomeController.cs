@@ -1,6 +1,5 @@
 ﻿using Ivelinshirov.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Services.Data;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -9,12 +8,10 @@ namespace Ivelinshirov.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly IArtworkService _artworkService;
 
-        public HomeController(ILogger<HomeController> logger, IArtworkService artworkService)
+        public HomeController(IArtworkService artworkService)
         {
-            _logger = logger;
             _artworkService = artworkService;
         }
 

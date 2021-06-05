@@ -45,7 +45,7 @@ namespace Ivelinshirov.Controllers
 
                 TempData["Success"] = true;
 
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(this.Index));
             }
 
             return View(model);

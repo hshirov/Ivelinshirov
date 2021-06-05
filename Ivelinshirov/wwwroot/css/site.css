@@ -98,8 +98,10 @@ body {
 }
 
 .artwork-item {
-    width: 100%;
+    width: 90%;
     height: auto;
+    display: block;
+    margin: auto;
 }
 
 .sortable-grid {
@@ -138,7 +140,7 @@ body {
     }
 
     .home-container {
-        width: 90%;
+        width: 100%;
     }
 
     .logo {
@@ -147,6 +149,10 @@ body {
     }
 
     .logo img {
+        width: 100%;
+    }
+
+    .artwork-item {
         width: 100%;
     }
 }
@@ -165,7 +171,7 @@ body {
 }
 
 .rslides {
-    height: 620px;
+    height: 70vh;
 }
 
 .rslides img {

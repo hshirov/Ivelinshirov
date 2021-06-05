@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Data.Models
@@ -12,6 +13,7 @@ namespace Data.Models
         public int PositionPreference { get; set; }
         [NotMapped]
         public IFormFile ImageFile { get; set; }
+        [Display(Name = "Feature on Home Page")]
         public bool IsFeaturedOnHomePage { get; set; }
 
         public Category Category { get; set; }

@@ -46,7 +46,7 @@ namespace Ivelinshirov.Controllers
                 }
                 else
                 {
-                    return RedirectToAction("Categories");
+                    return RedirectToAction(nameof(this.Categories));
                 }
             }
 
@@ -105,13 +105,14 @@ namespace Ivelinshirov.Controllers
                 {
                     Title = model.Title,
                     Category = await _categoryService.GetById(model.CategoryId),
-                    ImageFile = model.ImageFile
+                    ImageFile = model.ImageFile,
+                    IsFeaturedOnHomePage = model.IsFeaturedOnHomePage
                 };
 
                 await ImageFileHelper.SaveImageFromArtwork(artwork, _hostEnvironment);
                 await _artworkService.Add(artwork);
 
-                return RedirectToAction("Index", new { id = artwork.Category.Name });
+                return RedirectToAction(nameof(this.Index), new { id = artwork.Category.Name });
             }
 
             model.AllCategories = await _categoryService.GetAll();
@@ -143,7 +144,7 @@ namespace Ivelinshirov.Controllers
                 return View(model);
             }
 
-            return NotFound();
+            return StatusCode(500);
         }
 
         [HttpPost]
@@ -154,7 +155,7 @@ namespace Ivelinshirov.Controllers
             {
                 await _artworkService.Update(viewModel.Model);
 
-                return RedirectToAction("Index" , new { id = viewModel.Referer });
+                return RedirectToAction(nameof(this.Index) , new { id = viewModel.Referer });
             }
 
             return View(viewModel);
@@ -182,7 +183,7 @@ namespace Ivelinshirov.Controllers
             {
                 await _categoryService.Add(category);
 
-                return RedirectToAction("Categories");
+                return RedirectToAction(nameof(this.Categories));
             }
 
             return View(category);
@@ -204,7 +205,7 @@ namespace Ivelinshirov.Controllers
                 await _categoryService.Remove(id);
             }
 
-            return RedirectToAction("Categories");
+            return RedirectToAction(nameof(this.Categories));
         }
 
         public async Task<IActionResult> About()

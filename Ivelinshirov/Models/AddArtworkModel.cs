@@ -19,6 +19,9 @@ namespace Ivelinshirov.Models
         public int CategoryId { get; set; }
         public string RefererCategoryName { get; set; }
 
+        [Display(Name = "Feature on Home Page")]
+        public bool IsFeaturedOnHomePage { get; set; }
+
         public IEnumerable<Category> AllCategories { get; set; }
     }
 }

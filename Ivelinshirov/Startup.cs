@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Services.Data;
 using Services.External;
+using System;
 
 namespace Ivelinshirov
 {
@@ -32,6 +33,9 @@ namespace Ivelinshirov
             services.AddIdentity<ApplicationUser, IdentityRole>(options => {
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = false;
+                options.Lockout.AllowedForNewUsers = true;
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
             })
             .AddTokenProvider<DataProtectorTokenProvider<ApplicationUser>>(TokenOptions.DefaultProvider)
             .AddEntityFrameworkStores<ApplicationDbContext>();
