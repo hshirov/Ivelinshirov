@@ -1,4 +1,5 @@
 ﻿@using Services.Data
+@using Ivelinshirov.Common
 @inject ICategoryService categoryService
 
 <!DOCTYPE html>
@@ -33,14 +34,14 @@
                         @foreach (var category in await categoryService.GetAll())
                         {
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Art" asp-action="Index" asp-route-id="@category.Name">@category.Name.ToUpper()</a>
+                                <a class="nav-link @Html.ActiveClass("Art", "Index", category.Name)" asp-area="" asp-controller="Art" asp-action="Index" asp-route-id="@category.Name">@category.Name.ToUpper()</a>
                             </li>
                         }
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="About" asp-action="Index">ABOUT</a>
+                            <a class="nav-link @Html.ActiveClass("About", "Index")" asp-area="" asp-controller="About" asp-action="Index">ABOUT</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Contact" asp-action="Index">CONTACT</a>
+                            <a class="nav-link @Html.ActiveClass("Contact", "Index")" asp-area="" asp-controller="Contact" asp-action="Index">CONTACT</a>
                         </li>
                         @if (this.User.IsInRole("Admin"))
                         {

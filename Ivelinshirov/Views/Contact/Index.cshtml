@@ -3,6 +3,7 @@
     ViewData["Title"] = "Contact";
 }
 
+<link rel="stylesheet" href="~/css/email-form.css" />
 <div class="row justify-content-md-center">
     <div class="col-md-5">
         <h3 class="mb-3">Send an Email</h3>
@@ -28,7 +29,7 @@
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Send" class="btn btn-primary col-md-3" />
+                <input type="submit" value="Send Message" class="btn col-md-12 mt-2" />
             </div>
             @if (ViewBag.Success != null && ViewBag.Success)
             {
