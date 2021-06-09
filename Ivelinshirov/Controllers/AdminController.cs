@@ -105,8 +105,7 @@ namespace Ivelinshirov.Controllers
                 {
                     Title = model.Title,
                     Category = await _categoryService.GetById(model.CategoryId),
-                    ImageFile = model.ImageFile,
-                    IsFeaturedOnHomePage = model.IsFeaturedOnHomePage
+                    ImageFile = model.ImageFile
                 };
 
                 await ImageFileHelper.SaveImageFromArtwork(artwork, _hostEnvironment);
@@ -249,6 +248,39 @@ namespace Ivelinshirov.Controllers
 
                 TempData["SuccessContact"] = true;
                 return RedirectToAction(nameof(this.Contact));
+            }
+
+            return View(model);
+        }
+
+        public async Task<IActionResult> Slideshow()
+        {
+            var artwork = await _artworkService.GetAllFeaturedOnHomePage();
+
+            return View(artwork);
+        }
+
+        public IActionResult AddSlideshowItem()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddSlideshowItem(AddSlideshowItemModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                Artwork artwork = new Artwork()
+                {
+                    ImageFile = model.ImageFile,
+                    IsFeaturedOnHomePage = true
+                };
+
+                await ImageFileHelper.SaveImageFromArtwork(artwork, _hostEnvironment);
+                await _artworkService.Add(artwork);
+
+                return RedirectToAction(nameof(this.Slideshow));
             }
 
             return View(model);

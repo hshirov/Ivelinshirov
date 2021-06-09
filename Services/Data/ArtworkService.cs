@@ -42,7 +42,7 @@ namespace Services.Data
 
         public async Task<IEnumerable<Artwork>> GetAllFromCategory(int categoryId)
         {
-            return await GetAll().Where(x => x.Category.Id == categoryId).OrderBy(x => x.PositionPreference).ToListAsync();
+            return await GetAll().Where(x => x.Category.Id == categoryId && !x.IsFeaturedOnHomePage).OrderBy(x => x.PositionPreference).ToListAsync();
         }
 
         public async Task Remove(int id)
