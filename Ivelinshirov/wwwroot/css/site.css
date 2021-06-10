@@ -128,7 +128,7 @@ body {
 
 .bio-text {
     font-size: 20px;
-    text-align: center;
+    text-align: left;
     font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
     color: #222222;
 }
@@ -142,7 +142,6 @@ body {
 @media only screen and (max-width: 600px) {
     .bio-text {
         font-size: 14px;
-        text-align: left;
     }
 
     .home-container {
