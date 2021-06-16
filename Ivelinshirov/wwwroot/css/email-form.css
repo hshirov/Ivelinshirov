@@ -23,3 +23,7 @@ textarea {
 label {
     color: #666;
 }
+
+.success-text{
+    color: #008a12;
+}

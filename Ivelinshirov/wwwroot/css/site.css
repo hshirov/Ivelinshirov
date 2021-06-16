@@ -42,6 +42,16 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: normal;
 }
 
+.navbar {
+    margin-bottom: 1%;
+}
+
+@media(max-height: 800px) {
+    .navbar {
+        margin-bottom: .5%;
+    }
+}
+
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
@@ -53,8 +63,17 @@ html {
   }
 }
 
+footer .container {
+    color: #999999;
+}
+
+footer .container a {
+    color: #999999;
+    text-decoration: none;
+}
+
 .border-top {
-  border-top: 1px solid #e5e5e5;
+    border-top: 1px solid #e5e5e5;
 }
 .border-bottom {
   border-bottom: 1px solid #e5e5e5;
@@ -159,6 +178,9 @@ body {
 
     .artwork-item {
         width: 100%;
+    }
+    .navbar {
+        margin-bottom: 1%;
     }
 }
 
