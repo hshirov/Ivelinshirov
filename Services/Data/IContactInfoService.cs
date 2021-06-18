@@ -6,6 +6,6 @@ namespace Services.Data
     public interface IContactInfoService
     {
         Task<ContactInfo> Get();
-        Task Update(ContactInfo biography);
+        Task Update(ContactInfo contactInfo);
     }
 }
