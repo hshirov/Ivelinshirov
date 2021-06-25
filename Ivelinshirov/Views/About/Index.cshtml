@@ -4,10 +4,10 @@
 }
 
 <div class="row justify-content-md-center">
-    <div class="col-md-3 col-sm-12 image-box mb-3">
+    <div class="image-box mb-3 col-12">
         <img class="bio-image" src="~/images/bio_photo.png"/>
     </div>
-    <div class="col-md-7">  
+    <div class="col-12">  
         @Html.Raw("<pre class='bio-text'>" + Html.Encode(Model.Text) + "</pre>")  
     </div>
 </div>

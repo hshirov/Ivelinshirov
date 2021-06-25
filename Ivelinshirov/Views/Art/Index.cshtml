@@ -7,7 +7,7 @@
 <div class="row">
     @foreach (var artwork in Model)
     {
-        <div class="col-md-4 col-sm-6 mb-5">
+        <div class="col-md-4 col-sm-6 mb-4">
             <a href="~/images/artwork/@artwork.ImageName" data-lightbox="artwork" data-title="@artwork.Title">
                 <img data-original="/images/artwork/@artwork.ImageName" class="artwork-item" alt="@artwork.Title" />
             </a>
