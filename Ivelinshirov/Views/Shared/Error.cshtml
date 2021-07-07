@@ -3,12 +3,13 @@
     ViewData["Title"] = "Error";
 }
 
-<h1 class="text-danger">Error.</h1>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
-
-@if (Model.ShowRequestId)
+@if (Model.StatusCode == 404)
 {
-    <p>
-        <strong>Status Code: </strong> <code>@Model.StatusCode</code>
-    </p>
+    <h1>404</h1>
+    <h2 class="text-muted">Page not found.</h2>
+}
+else
+{
+    <h1>Something went wrong.</h1>
+    <h2 class="text-muted">Please try again later.</h2>
 }
