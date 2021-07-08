@@ -46,6 +46,8 @@ namespace Ivelinshirov
                 options.AccessDeniedPath = new PathString("/Identity/Account/AccessDenied");
             });
 
+            services.AddAutoMapper(typeof(Startup));
+
             services.AddControllersWithViews();
             services.AddRazorPages();
 

@@ -1,10 +1,13 @@
-﻿using Data.Models;
+﻿using AutoMapper;
+using Data.Models;
 using Ivelinshirov.Common;
 using Ivelinshirov.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Services.Data;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,13 +21,15 @@ namespace Ivelinshirov.Controllers
         private readonly ICategoryService _categoryService;
         private readonly IBiographyService _biographyService;
         private readonly IContactInfoService _contactInfoService;
+        private readonly IMapper _mapper;
 
         public AdminController(
             IWebHostEnvironment hostEnvironment, 
             IArtworkService artworkService, 
             ICategoryService categoryService, 
             IBiographyService biographyService,
-            IContactInfoService contactInfoService
+            IContactInfoService contactInfoService,
+            IMapper mapper
         )
         {
             _hostEnvironment = hostEnvironment;
@@ -32,46 +37,35 @@ namespace Ivelinshirov.Controllers
             _categoryService = categoryService;
             _biographyService = biographyService;
             _contactInfoService = contactInfoService;
+            _mapper = mapper;
         }
 
+        [Route("Admin/Category/{id?}")]
         public async Task<IActionResult> Index(string id)
         {
-            if(id == null)
+            if (id == null)
             {
                 var defaultCategory = _categoryService.GetAll().Result.FirstOrDefault();
 
-                if(defaultCategory != null)
-                {
-                    id = defaultCategory.Name;
-                }
-                else
+                if (defaultCategory == null)
                 {
                     return RedirectToAction(nameof(this.Categories));
                 }
+
+                return RedirectToAction(nameof(this.Index), new { id = defaultCategory.Name });
             }
 
-            if (id != null)
+            var category = await _categoryService.GetByName(id);
+
+            if (category != null)
             {
-                var category = await _categoryService.GetByName(id);
+                var model = new AdminArtworkModel()
+                {
+                    Artworks = _mapper.Map<IEnumerable<Artwork>, IEnumerable<AdminArtworkIndexModel>>(await _artworkService.GetAllFromCategory(category.Id)),
+                    Category = category.Name
+                };
 
-                if (category != null) 
-                { 
-                    var artwork = await _artworkService.GetAllFromCategory(category.Id);
-
-                    var artworkIndexModel = artwork.Select(e => new AdminArtworkIndexModel 
-                    { 
-                        Id = e.Id,
-                        ImageName = e.ImageName
-                    });
-
-                    var model = new AdminArtworkModel()
-                    {
-                        Artworks = artworkIndexModel,
-                        Category = category.Name
-                    };
-
-                    return View(model);
-                }
+                return View(model);
             }
 
             return StatusCode(404);
@@ -101,14 +95,18 @@ namespace Ivelinshirov.Controllers
         {
             if (ModelState.IsValid)
             {
-                Artwork artwork = new Artwork()
-                {
-                    Title = model.Title,
-                    Category = await _categoryService.GetById(model.CategoryId),
-                    ImageFile = model.ImageFile
-                };
+                var artwork = _mapper.Map<Artwork>(model);
+                artwork.Category = await _categoryService.GetById(model.CategoryId);
 
-                await ImageFileHelper.SaveImageFromArtwork(artwork, _hostEnvironment);
+                try
+                {
+                    await ImageFileHelper.SaveImageFromArtwork(artwork, _hostEnvironment);
+                }
+                catch(IOException)
+                {
+                    return StatusCode(500);
+                }
+
                 await _artworkService.Add(artwork);
 
                 return RedirectToAction(nameof(this.Index), new { id = artwork.Category.Name });
@@ -195,7 +193,6 @@ namespace Ivelinshirov.Controllers
 
             if (category != null)
             {
-                // Remove image files
                 foreach (var artwork in category.Artworks)
                 {
                     ImageFileHelper.DeleteArtworkImage(artwork);
@@ -271,13 +268,18 @@ namespace Ivelinshirov.Controllers
         {
             if (ModelState.IsValid)
             {
-                Artwork artwork = new Artwork()
-                {
-                    ImageFile = model.ImageFile,
-                    IsFeaturedOnHomePage = true
-                };
+                var artwork = _mapper.Map<Artwork>(model);
+                artwork.IsFeaturedOnHomePage = true;
 
-                await ImageFileHelper.SaveImageFromArtwork(artwork, _hostEnvironment);
+                try
+                {
+                    await ImageFileHelper.SaveImageFromArtwork(artwork, _hostEnvironment);
+                }
+                catch (IOException)
+                {
+                    return StatusCode(500);
+                }
+
                 await _artworkService.Add(artwork);
 
                 return RedirectToAction(nameof(this.Slideshow));
