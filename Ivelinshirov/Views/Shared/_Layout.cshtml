@@ -29,19 +29,19 @@
                 @foreach (var category in await categoryService.GetAll())
                 {
                     <li class="nav-item">
-                        <a class="nav-link @Html.ActiveClass("Art", "Index", category.Name)" asp-area="" asp-controller="Art" asp-action="Index" asp-route-id="@category.Name">@category.Name.ToUpper()</a>
+                        <a class="nav-link @Html.ActiveClass("Art", "Index", category.Name)" asp-area="" asp-controller="Art" asp-action="Index" asp-route-id="@category.Name">@category.Name</a>
                     </li>
                 }
                 <li class="nav-item">
-                    <a class="nav-link @Html.ActiveClass("About", "Index")" asp-area="" asp-controller="About" asp-action="Index">ABOUT</a>
+                    <a class="nav-link @Html.ActiveClass("About", "Index")" asp-area="" asp-controller="About" asp-action="Index">About</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link @Html.ActiveClass("Contact", "Index")" asp-area="" asp-controller="Contact" asp-action="Index">CONTACT</a>
+                    <a class="nav-link @Html.ActiveClass("Contact", "Index")" asp-area="" asp-controller="Contact" asp-action="Index">Contact</a>
                 </li>
                 @if (this.User.IsInRole("Admin"))
                 {
                     <li class="nav-item">
-                        <a class="nav-link" asp-area="" asp-controller="Admin" asp-action="Index">ADMIN PANEL</a>
+                        <a class="nav-link" asp-area="" asp-controller="Admin" asp-action="Index">Admin Panel</a>
                     </li>
                 }
             </ul>
